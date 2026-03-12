@@ -1,15 +1,11 @@
-function sendData(){
-    fetch("http://localhost:3000/data",{
-        methods:"post",
-        headers:{
-            "content-type":"application/json"        
-    },
-    body: Json.stringify({
-        name: "Mouli",
-        skill: "backend"
-    })
-    })
-.then(res=>res.text())
-.then(data => alert(data));
+const socket = io();
 
+function sendMessage() {
+  const msg = document.getElementById("msg").value;
+  socket.emit("chat-message", msg);
 }
+
+socket.on("chat-message", (msg) => {
+  const chat = document.getElementById("chat");
+  chat.innerHTML += "<p>" + msg + "</p>";
+});
