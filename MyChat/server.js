@@ -25,16 +25,18 @@ io.on("connection", (socket) => {
 });
 
 // MongoDB connect
-mongoose.connect("mongodb+srv://mouli_db_user:<db_password>@cluster0.1ub67ev.mongodb.net/chatdb")
+mongoose.connect("mongodb+srv://mouli_db_user:abc123@cluster0.1ub67ev.mongodb.net/chatdb?retryWrites=true&w=majority")
 .then(()=>console.log("MongoDB Connected"))
 .catch((err)=>console.log(err));
 
 // Root route
-app.get("/", (req,res)=>{
+app.get("/", (req, res) =>{
     res.send("Server Running Successfully 🚀");
 });
 
+
+
 // Start server
-server.listen(5000, ()=>{
-    console.log("Server running on http://localhost:5000");
+server.listen(8000, ()=>{
+    console.log("Server running on http://localhost:8000");
 });
