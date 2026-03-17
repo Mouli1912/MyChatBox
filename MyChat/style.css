@@ -113,7 +113,10 @@ body {
     gap: 8px;
  }
  
- 
+ .bot-message{
+    color: grey;
+    font-style: italic;
+ }
 
 
  

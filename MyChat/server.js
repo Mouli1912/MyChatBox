@@ -40,3 +40,7 @@ app.get("/", (req, res) =>{
 server.listen(8000, ()=>{
     console.log("Server running on http://localhost:8000");
 });
+
+io.on("connection", (socket)=>{
+    socket.emit("message", "How can i help you?");
+});

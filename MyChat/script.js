@@ -23,3 +23,19 @@ socket.on("chat-message", (msg) => {
   const chat = document.getElementById("chat");
   chat.innerHTML += "<p>" + msg + "</p>";
 });
+
+const message = document.getElementById("message");
+
+//Default message 
+
+window.onload = function(){
+  const li = this.document.createElement("li");
+  li.textContent = "How can I help you?";
+  // styling 
+  li.style.color ="grey";
+  li.style.fontstyle ="italic";
+  message.appendChild(li);
+  
+  li.classList.add("bot-message");
+
+};
