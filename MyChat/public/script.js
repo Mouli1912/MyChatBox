@@ -1,41 +1,25 @@
-const socket = io();
-socket.on =io();
- socket.on("connect", ()=>{
-  console.log("connected to server");
- });
+document.addEventListener("DOMContentLoaded", () => {
 
- const input = document.getElementById("message");
- const btn = document.getElementById("send");
+  const socket = io();
 
- btn.addEventListener("click",()=>{
-  socket.emit("chat-message",input.value);
- });
+  const messages = document.getElementById("messages");
+  const input = document.getElementById("messageInput");
+  const btn = document.getElementById("sendButton");
 
-function sendMessage() {
-  const msg = document.getElementById("msg").value;
-  socket.emit("chat-message", msg);
-}
+  console.log("JS LOADED 🔥");
 
-socket.on("chat-message", (msg) => {
-  let li = document.getElementById("msg").values;
-  li.textContent = msg;
-  document.getElementById("chat").appendChild(li);
-  const chat = document.getElementById("chat");
-  chat.innerHTML += "<p>" + msg + "</p>";
+  btn.addEventListener("click", () => {
+    console.log("CLICK WORKING 🔥");
+
+    const msg = input.value;
+    socket.emit("chatMessage", msg);
+    input.value = "";
+  });
+
+  socket.on("chatMessage", (msg) => {
+    const li = document.createElement("li");
+    li.textContent = msg;
+    messages.appendChild(li);
+  });
+
 });
-
-const message = document.getElementById("message");
-
-//Default message 
-
-window.onload = function(){
-  const li = this.document.createElement("li");
-  li.textContent = "How can I help you?";
-  // styling 
-  li.style.color ="grey";
-  li.style.fontstyle ="italic";
-  message.appendChild(li);
-  
-  li.classList.add("bot-message");
-
-};
