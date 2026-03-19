@@ -44,3 +44,5 @@ server.listen(8000, ()=>{
 io.on("connection", (socket)=>{
     socket.emit("message", "How can i help you?");
 });
+
+app.use(express.static("public"));
