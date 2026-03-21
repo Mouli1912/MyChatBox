@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
         // user message show
         io.emit("chatMessage", msg);
 
-        // 🔥 IMPORTANT FIX
+      
         msg = msg.trim().toLowerCase();  // 👈 ye line add ki
 
         let reply = "";
