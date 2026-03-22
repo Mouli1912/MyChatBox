@@ -4,14 +4,14 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     height: 100vh;
-    background-color: #0f0f0f;
+    background-color: #0f0f0f; /* pure dark */
     color: white;
 }
 
 /* Sidebar */
 .sidebar {
     width: 250px;
-    background-color: #171717;
+    background-color: #171717; /* dark grey */
     padding: 20px;
     box-sizing: border-box;
     border-right: 1px solid #2a2a2a;
@@ -31,20 +31,21 @@ body {
     background-color: #2a2a2a;
 }
 
-/* Logo FIX */
-.logo {
+/*Icons*/
+div.logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    gap: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 20px;
+    
 }
-
-/* IMPORTANT: size control */
 .logo img {
-    width: 40px;   /* FIXED */
-    height: auto;
-}
+     width: 130px; 
+     height: auto;
 
+}
 /* Main */
 .main-content {
     flex: 1;
@@ -62,26 +63,25 @@ body {
     flex-direction: column;
 }
 
-/* Messages base */
+/* Messages */
 .message {
     padding: 10px 14px;
     border-radius: 12px;
     margin-bottom: 10px;
     max-width: 70%;
     font-size: 14px;
-    word-wrap: break-word;
 }
 
-/* User message */
+/* User message (right) */
 .user {
-    background-color: white;  /* FIX: now visible */
-    color: black;
+    background-color: #2563eb; /* blue */
+    color: white;
     align-self: flex-end;
 }
 
-/* Bot message */
+/* Bot message (left) */
 .bot {
-    background-color: #262626;
+    background-color: #262626; /* dark grey bubble */
     color: white;
     align-self: flex-start;
 }
@@ -94,7 +94,7 @@ body {
     background-color: #171717;
 }
 
-/* Input */
+/* Input box */
 #messageInput {
     flex: 1;
     padding: 10px;
@@ -106,26 +106,16 @@ body {
     outline: none;
 }
 
-/* Button FIX */
+/* Button */
 #sendButton {
     padding: 10px 20px;
-    background-color: #000;  /* black */
+    background-color:gray;
     color: white;
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    outline: none;
 }
 
-/* remove blue click */
-#sendButton:focus,
-#sendButton:active {
-    outline: none;
-    box-shadow: none;
-    background-color: #000;
-}
-
-/* hover */
 #sendButton:hover {
-    background-color: #222;
+    background-color: black;
 }

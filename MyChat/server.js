@@ -14,7 +14,7 @@ io.on("connection", (socket) => {
     console.log("user connected:", socket.id);
 
     // // default message
-    // socket.emit("chatMessage", "🤖 How can I help you?");
+    socket.emit("chatMessage", "🤖 Welcome to MyChat! Type 'hi' or 'hello' to start chatting.");
 
     socket.on("chatMessage", (msg) => {
         console.log("User:", msg);

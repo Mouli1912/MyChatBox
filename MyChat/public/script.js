@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const socket = io();
 
   const messages = document.getElementById("messages");
@@ -8,40 +7,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("JS LOADED 🔥");
 
-  // SEND MESSAGE
-  btn.addEventListener("click", () => {
-    const msg = input.value;
+  // ----------------------
+  // Send message
+  // ----------------------
+  const sendMessage = () => {
+    const msg = input.value.trim();
+    if (!msg) return;
 
-    if (msg.trim() === "") return;
-
-    // show user message instantly
+    // Show user message instantly
     addMessage(msg, "user");
 
+    // Send message to server
     socket.emit("chatMessage", msg);
+
+    // Clear input
     input.value = "";
+  };
+
+  btn.addEventListener("click", sendMessage);
+
+  // Send on Enter key
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
   });
 
-  // RECEIVE MESSAGE
+  // ----------------------
+  // Receive message
+  // ----------------------
   socket.on("chatMessage", (msg) => {
+    // Only show bot messages
     if (msg.includes("🤖")) {
-      addMessage(msg, "bot");
+      add.Message(msg, "bot");
     }
   });
 
-  // FUNCTION to add message
+  // ----------------------
+  // Function to add message
+  // ----------------------
   function addMessage(msg, type) {
     const li = document.createElement("li");
-    li.classList.add("message", type);
     li.textContent = msg;
+    li.classList.add("message", type);
     messages.appendChild(li);
 
-    // socket.on("chatMessage", (msg) => { 
-    // // const li = document.createElement("li"); 
-    // // li.textContent = msg; 
-    // // messages.appendChild(li); 
-    // // }); 
-    // auto scroll
+    // Auto-scroll to bottom
     messages.scrollTop = messages.scrollHeight;
   }
-
 });
