@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("chatMessage", (msg) => {
     // Only show bot messages
     if (msg.includes("🤖")) {
-      add.Message(msg, "bot");
+      addMessage(msg, "bot");
     }
   });
 

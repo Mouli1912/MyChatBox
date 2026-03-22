@@ -9,53 +9,74 @@ app.use(express.static("public"));
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Socket.IO
-io.on("connection", (socket) => {
-    console.log("user connected:", socket.id);
+// --- MongoDB setup ---
+mongoose.connect("mongodb+srv://mouli_db_user:abc123@cluster0.1ub67ev.mongodb.net/chatdb?retryWrites=true&w=majority")
+    .then(() => console.log("MongoDB Connected"))
+    .catch((err) => console.log(err));
 
-    // // default message
-    socket.emit("chatMessage", "🤖 Welcome to MyChat! Type 'hi' or 'hello' to start chatting.");
+// Chat Schema
+const chatSchema = new mongoose.Schema({
+    username: String,       // can be socket.id or "Bot"
+    message: String,
+    timestamp: { type: Date, default: Date.now }
+});
+const Chat = mongoose.model("Chat", chatSchema);
 
-    socket.on("chatMessage", (msg) => {
+// --- Socket.IO ---
+io.on("connection", async (socket) => {
+    console.log("User connected:", socket.id);
+
+    // Send last 50 messages from DB to the new user
+    const lastMessages = await Chat.find().sort({ timestamp: 1 }).limit(50);
+    lastMessages.forEach((msg) => {
+        socket.emit("chatMessage", `${msg.username}: ${msg.message}`);
+    });
+
+    // Welcome message
+    const welcome = "🤖 Welcome to MyChat! Type 'hi' or 'hello' to start chatting.";
+    socket.emit("chatMessage", `Bot: ${welcome}`);
+    const welcomeMsg = new Chat({ username: "Bot", message: welcome });
+    await welcomeMsg.save();
+
+    // User sends a message
+    socket.on("chatMessage", async (msg) => {
+        msg = msg.trim();
         console.log("User:", msg);
 
-        // user message show
-        io.emit("chatMessage", msg);
+        // Save user message
+        const userMsg = new Chat({ username: socket.id, message: msg });
+        await userMsg.save();
 
-      
-        msg = msg.trim().toLowerCase();  // 👈 ye line add ki
+        // Broadcast user message to all
+        io.emit("chatMessage", `${socket.id}: ${msg}`);
 
+        // Bot reply logic
         let reply = "";
-
-        if (msg === "hi") {
-            reply = "🤖 How can I help you today?";
-        } 
-        else if (msg === "hello") {
-            reply = "🤖 Hello! What do you need help with?";
-        } 
-        else {
+        const lower = msg.toLowerCase();
+        if (lower === "hi" || lower === "hello") {
+            reply = "🤖 Hello! How can I help you today?";
+        } else {
             reply = "🤖 I can't understand that 😅";
         }
 
         console.log("Bot:", reply);
 
-        // bot reply
+        // Save bot message
+        const botMsg = new Chat({ username: "Bot", message: reply });
+        await botMsg.save();
+
+        // Send bot message after 1 second
         setTimeout(() => {
-            socket.emit("chatMessage", reply);
+            io.emit("chatMessage", `Bot: ${reply}`);
         }, 1000);
     });
 
     socket.on("disconnect", () => {
-        console.log("user disconnected:", socket.id);
+        console.log("User disconnected:", socket.id);
     });
 });
 
-// MongoDB
-mongoose.connect("mongodb+srv://mouli_db_user:abc123@cluster0.1ub67ev.mongodb.net/chatdb?retryWrites=true&w=majority")
-.then(()=>console.log("MongoDB Connected"))
-.catch((err)=>console.log(err));
-
-// server start
-server.listen(8000, ()=>{
+// --- Start server ---
+server.listen(8000, () => {
     console.log("Server running on http://localhost:8000");
 });
