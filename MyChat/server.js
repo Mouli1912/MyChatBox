@@ -13,8 +13,8 @@ const io = new Server(server);
 io.on("connection", (socket) => {
     console.log("user connected:", socket.id);
 
-    // default message
-    socket.emit("chatMessage", "🤖 How can I help you?");
+    // // default message
+    // socket.emit("chatMessage", "🤖 How can I help you?");
 
     socket.on("chatMessage", (msg) => {
         console.log("User:", msg);
