@@ -14,8 +14,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const msg = input.value.trim();
     if (!msg) return;
 
-    // Show user message instantly
+    // Show user message
     addMessage(msg, "user");
+
+    // 👉 AUTO REPLY (IMPORTANT 🔥)
+    if (msg.toLowerCase().includes("hi")) {
+      setTimeout(() => {
+        addMessage("How can I help you?", "bot");
+      }, 500);
+    }
 
     // Send message to server
     socket.emit("chatMessage", msg);
@@ -26,23 +33,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btn.addEventListener("click", sendMessage);
 
-  // Send on Enter key
+  // Enter key
   input.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
   });
 
   // ----------------------
-  // Receive message
+  // Receive message from server
   // ----------------------
-  socket.on("chatMessage", (msg) => {
-    // Only show bot messages
-    if (msg.includes("🤖")) {
-      addMessage(msg, "bot");
-    }
+  socket.on("message", (msg) => {
+    addMessage(msg, "bot");
   });
 
   // ----------------------
-  // Function to add message
+  // Add message to UI
   // ----------------------
   function addMessage(msg, type) {
     const li = document.createElement("li");
@@ -50,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     li.classList.add("message", type);
     messages.appendChild(li);
 
-    // Auto-scroll to bottom
     messages.scrollTop = messages.scrollHeight;
   }
 });

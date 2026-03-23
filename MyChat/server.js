@@ -43,6 +43,10 @@ io.on("connection", async (socket) => {
         msg = msg.trim();
         console.log("User:", msg);
 
+        io.on("connection", (socket)=>{
+            console.log("user connected:", socket.id);
+            socket.emit("chatMessage", "Welcome to MyChat!");
+        })
         // Save user message
         const userMsg = new Chat({ username: socket.id, message: msg });
         await userMsg.save();
@@ -77,6 +81,6 @@ io.on("connection", async (socket) => {
 });
 
 // --- Start server ---
-server.listen(8000, () => {
-    console.log("Server running on http://localhost:8000");
+server.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
 });
