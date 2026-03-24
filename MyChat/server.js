@@ -80,7 +80,10 @@ io.on("connection", async (socket) => {
     });
 });
 
-// --- Start server ---
-server.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.listen(3000,"0.0.0.0", ()=>{
+    console.log("server running ");
 });
+// --- Start server ---
+// server.listen(3000, () => {
+//     console.log("Server running on http://localhost:3000");
+// });

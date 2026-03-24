@@ -65,7 +65,8 @@ div.logo {
 
 /* Messages */
 .message {
-    padding: 10px 14px;
+    padding: 8px 12px;
+    margin: 5px;
     border-radius: 12px;
     margin-bottom: 10px;
     max-width: 70%;
